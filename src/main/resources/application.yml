@@ -1,0 +1,23 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: kafka
+
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      retries: 0
+      acks: 1
+      batch-size: 5120
+      properties:
+        linger:
+          ms: 0
+      buffer-memory: 5242880
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      properties:
+        group:
+          id: defaultConsumerGroup
+      enable-auto-commit: true
