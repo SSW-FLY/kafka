@@ -3,6 +3,7 @@ package com.example.kafka.controller;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import javax.annotation.Resource;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.ListTopicsResult;
@@ -28,11 +29,13 @@ public class KafkaProducer {
 
     @GetMapping("/api/kafka/normal/{message}")
     public String sendMessage(@PathVariable("message") String message) {
-        kafkaTemplate.send("topic-test-llc", message);
         ListTopicsResult result = adminClient.listTopics();
         KafkaFuture<Set<String>> names = result.names();
-        KafkaFuture<Collection<TopicListing>> listings = result.listings();
-        KafkaFuture<Map<String, TopicListing>> future = result.namesToListings();
+        try {
+            names.get().forEach(System.out::println);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "ok";
     }
 
